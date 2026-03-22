@@ -47,7 +47,7 @@ namespace BibliotecaApp
                         Console.WriteLine("\nUltima carte introdusa:");
                         afisareCarteNoua(carteNoua);
                         break;
-                    
+
                     case "A":
                         Console.WriteLine("\nCarti in biblioteca:");
                         if (biblioteca.Count != 0)
