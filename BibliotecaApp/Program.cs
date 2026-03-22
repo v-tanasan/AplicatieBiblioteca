@@ -23,7 +23,7 @@ namespace BibliotecaApp
                 Console.WriteLine("M. Inregistreaza cititor");
                 Console.WriteLine("I. Imprumuta carte");
                 Console.WriteLine("R. Returneaza carte");
-                Console.WriteLine("X. Exit");
+                Console.WriteLine("X. Exit\n");
 
                 optiune = Console.ReadLine()?.ToUpper() ?? string.Empty;
 
@@ -31,8 +31,18 @@ namespace BibliotecaApp
                 {
                     case "C":
                         carteNoua = citireCarteTastatura();
+                        if (carteNoua != null)
+                        {
+                            adminBiblioteca.addCarte(carteNoua);
+                            Console.WriteLine("\nCarte adaugata cu succes!");
+                        }
                         break;
-                    
+
+                    case "S":
+                        Carte stergCarte = citireTitluCarteTastatura(biblioteca);
+                        adminBiblioteca.removeCarte(biblioteca, stergCarte);
+                        break;
+
                     case "U":
                         Console.WriteLine("\nUltima carte introdusa:");
                         afisareCarteNoua(carteNoua);
@@ -44,7 +54,7 @@ namespace BibliotecaApp
                         {
                             foreach (var carte in biblioteca)
                             {
-                                Console.WriteLine($"Titlu: {carte.Titlu}, Autor: {carte.Autor}");
+                                Console.WriteLine($"Id: {carte.Id}, Titlu: \"{carte.Titlu}\", Autor: {carte.Autor}");
                             }
                         }
                         else
@@ -54,13 +64,13 @@ namespace BibliotecaApp
                         break;
 
                     case "X":
-                                Console.WriteLine("\nIesire din aplicatie...");
-                                return;
+                        Console.WriteLine("\nIesire din aplicatie...");
+                        return;
 
-                            default:
-                                Console.WriteLine("!! Optiune invalida. Va rugam sa selectati o optiune valida !!");
-                                break;
-                            }
+                    default:
+                        Console.WriteLine("!! Optiune invalida. Va rugam selectati o optiune valida !!");
+                        break;
+                        }
             } while (optiune.ToUpper() != "X");
             Console.ReadKey();
         }
@@ -75,11 +85,30 @@ namespace BibliotecaApp
             return carte;
         }
 
+        public static Carte citireTitluCarteTastatura(List<Carte> biblio)
+        {
+            Carte stergCarte = null;
+            Console.WriteLine("\nIntroduceti titlul cartii de sters:");
+            string titluCarte = Console.ReadLine();
+            foreach (var c in biblio)
+            {
+                if (c.Titlu == titluCarte)
+                { 
+                    stergCarte = c;
+                    break;
+                }
+            }
+            return stergCarte;
+        }
+
         public static void afisareCarteNoua(Carte cNoua)
         {
             if (cNoua != null)
             {
-                Console.WriteLine($"Titlu: \"{cNoua.Titlu}\", Autor: {cNoua.Autor}");
+                Console.WriteLine($"Id:{cNoua.Id} ,Titlu: \"{cNoua.Titlu}\", Autor: {cNoua.Autor}");
+            }else
+            {
+                Console.WriteLine("Nu a fost introdusa nici o carte noua...");
             }
         }
     }
