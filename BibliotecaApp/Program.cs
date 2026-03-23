@@ -1,5 +1,6 @@
-﻿using LibrarieModele;
+﻿using System;
 using GestiuneBiblioteca;
+using LibrarieModele;
 
 namespace BibliotecaApp
 {
@@ -20,6 +21,7 @@ namespace BibliotecaApp
                 Console.WriteLine("U. Afiseaza ultima carte introdusa");
                 Console.WriteLine("A. Afiseaza carti");
                 Console.WriteLine("S. Sterge carte");
+                Console.WriteLine("F. Cauta carte");
                 Console.WriteLine("M. Inregistreaza cititor");
                 Console.WriteLine("I. Imprumuta carte");
                 Console.WriteLine("R. Returneaza carte");
@@ -63,6 +65,10 @@ namespace BibliotecaApp
                         }
                         break;
 
+                    case "F":
+                        cautareTitluCarti(biblioteca);
+                        break;
+
                     case "X":
                         Console.WriteLine("\nIesire din aplicatie...");
                         return;
@@ -70,7 +76,7 @@ namespace BibliotecaApp
                     default:
                         Console.WriteLine("!! Optiune invalida. Va rugam selectati o optiune valida !!");
                         break;
-                        }
+                }
             } while (optiune.ToUpper() != "X");
             Console.ReadKey();
         }
@@ -109,6 +115,26 @@ namespace BibliotecaApp
             }else
             {
                 Console.WriteLine("Nu a fost introdusa nici o carte noua...");
+            }
+        }
+
+        public static void cautareTitluCarti(List<Carte> biblio)
+        { 
+            Console.WriteLine("\nIntroduceti titlul cartii de cautat:");
+            string titluCarte = Console.ReadLine();
+            bool gasit = false;
+            foreach (Carte c in biblio)
+            {
+                if (c.Titlu == titluCarte)
+                {
+                    Console.WriteLine($"Id:{c.Id} ,Titlu: \"{c.Titlu}\", Autor: {c.Autor}");
+                    gasit = true;
+                }
+            }
+            
+            if (!gasit)
+            {
+                Console.WriteLine("Cartea nu a fost gasita in biblioteca...");
             }
         }
     }
