@@ -6,32 +6,48 @@ namespace BibliotecaApp
 {
     class Program
     {
+        public enum OptiuneMeniu
+        {
+            AdaugaCarte = 1,
+            AfiseazaUltimaCarte = 2,
+            AfiseazaCarti = 3,
+            StergeCarte = 4,
+            CautaCarte = 5,
+            CautaAutor = 6,
+            InregistrareCititor = 7,
+            ImprumutaCarte = 8,
+            ReturneazaCarte = 9,
+            Iesire = 0
+        }
+
         public static void Main()
         {
             Carte? carteNoua = null;
             administareBiblioteca adminBiblioteca = new administareBiblioteca();
             List<Carte> biblioteca = adminBiblioteca.getCarti();
-            string optiune;
+            OptiuneMeniu optiune;
 
             do
             {
                 Console.WriteLine("\n== Aplicatie Biblioteca ==\n");
                 Console.WriteLine("Selectati o optiune:");
-                Console.WriteLine("C. Adaugare carte");
-                Console.WriteLine("U. Afiseaza ultima carte introdusa");
-                Console.WriteLine("A. Afiseaza carti");
-                Console.WriteLine("S. Sterge carte");
-                Console.WriteLine("F. Cauta carte");
-                Console.WriteLine("M. Inregistreaza cititor");
-                Console.WriteLine("I. Imprumuta carte");
-                Console.WriteLine("R. Returneaza carte");
-                Console.WriteLine("X. Exit\n");
+                Console.WriteLine("1. Adaugare carte");
+                Console.WriteLine("2. Afiseaza ultima carte introdusa");
+                Console.WriteLine("3. Afiseaza carti");
+                Console.WriteLine("4. Sterge carte");
+                Console.WriteLine("5. Cauta carte");
+                Console.WriteLine("6. Cauta autor");
+                Console.WriteLine("7. Inregistreaza cititor");
+                Console.WriteLine("8. Imprumuta carte");
+                Console.WriteLine("9. Returneaza carte");
+                Console.WriteLine("0. Exit\n");
 
-                optiune = Console.ReadLine()?.ToUpper() ?? string.Empty;
+                int input = int.Parse(Console.ReadLine());
+                optiune = (OptiuneMeniu)input;
 
                 switch (optiune)
                 {
-                    case "C":
+                    case OptiuneMeniu.AdaugaCarte:
                         carteNoua = citireCarteTastatura();
                         if (carteNoua != null)
                         {
@@ -40,17 +56,17 @@ namespace BibliotecaApp
                         }
                         break;
 
-                    case "S":
+                    case OptiuneMeniu.StergeCarte:
                         Carte stergCarte = citireTitluCarteTastatura(biblioteca);
                         adminBiblioteca.removeCarte(biblioteca, stergCarte);
                         break;
 
-                    case "U":
+                    case OptiuneMeniu.AfiseazaUltimaCarte:
                         Console.WriteLine("\nUltima carte introdusa:");
                         afisareCarteNoua(carteNoua);
                         break;
 
-                    case "A":
+                    case OptiuneMeniu.AfiseazaCarti:
                         Console.WriteLine("\nCarti in biblioteca:");
                         if (biblioteca.Count != 0)
                         {
@@ -65,11 +81,15 @@ namespace BibliotecaApp
                         }
                         break;
 
-                    case "F":
+                    case OptiuneMeniu.CautaCarte:
                         cautareTitluCarti(biblioteca);
                         break;
 
-                    case "X":
+                    case OptiuneMeniu.CautaAutor:
+                        linq_cautareAutorCarti(biblioteca);
+                        break;
+
+                    case OptiuneMeniu.Iesire:
                         Console.WriteLine("\nIesire din aplicatie...");
                         return;
 
@@ -77,7 +97,7 @@ namespace BibliotecaApp
                         Console.WriteLine("!! Optiune invalida. Va rugam selectati o optiune valida !!");
                         break;
                 }
-            } while (optiune.ToUpper() != "X");
+            } while (optiune != OptiuneMeniu.Iesire);
             Console.ReadKey();
         }
 
@@ -122,19 +142,32 @@ namespace BibliotecaApp
         { 
             Console.WriteLine("\nIntroduceti titlul cartii de cautat:");
             string titluCarte = Console.ReadLine();
-            bool gasit = false;
+            var cartiGasite = biblio.Where(a => 
+                a.Titlu.Contains(titluCarte, StringComparison.OrdinalIgnoreCase));
             foreach (Carte c in biblio)
             {
-                if (c.Titlu == titluCarte)
-                {
-                    Console.WriteLine($"Id:{c.Id} ,Titlu: \"{c.Titlu}\", Autor: {c.Autor}");
-                    gasit = true;
-                }
+                Console.WriteLine($"Id:{c.Id} ,Titlu: \"{c.Titlu}\", Autor: {c.Autor}");
             }
             
-            if (!gasit)
+            if (!cartiGasite.Any())
             {
                 Console.WriteLine("Cartea nu a fost gasita in biblioteca...");
+            }
+        }
+        
+        public static void linq_cautareAutorCarti(List<Carte> biblio)
+        {
+            Console.WriteLine("\nIntroduceti numele autorului:");
+            string autorCarte = Console.ReadLine();         
+            var autoriGasiti = biblio.Where(a =>
+                a.Autor.Contains(autorCarte, StringComparison.OrdinalIgnoreCase));           
+            foreach (Carte c in autoriGasiti)
+            {
+                Console.WriteLine($"Id:{c.Id} ,Titlu: \"{c.Titlu}\", Autor: {c.Autor}");
+            }
+            if (!autoriGasiti.Any())
+            {
+                Console.WriteLine("Nu a fost gasit nici un autor cu acest nume...");
             }
         }
     }
