@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GestiuneBiblioteca", "Gesti
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NivelStocareDate", "NivelStocareDate\NivelStocareDate.csproj", "{C2846BFA-F819-4F03-AB0D-BEAC0273C4A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NivelUIWPF", "NivelUIWPF\NivelUIWPF.csproj", "{44A6C851-447D-4ACA-8DF4-D67C1647ADBA}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{C2846BFA-F819-4F03-AB0D-BEAC0273C4A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C2846BFA-F819-4F03-AB0D-BEAC0273C4A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C2846BFA-F819-4F03-AB0D-BEAC0273C4A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{44A6C851-447D-4ACA-8DF4-D67C1647ADBA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{44A6C851-447D-4ACA-8DF4-D67C1647ADBA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{44A6C851-447D-4ACA-8DF4-D67C1647ADBA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{44A6C851-447D-4ACA-8DF4-D67C1647ADBA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

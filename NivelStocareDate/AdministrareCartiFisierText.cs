@@ -26,7 +26,7 @@ namespace NivelStocareDate
             // modul 'append' de deschidere al fisierului
             using (StreamWriter streamWriterFisierText = new StreamWriter(numeFisier, true))
             {
-                streamWriterFisierText.WriteLine(student.ConversieLaSirPentruFisier());
+                streamWriterFisierText.WriteLine(carte.ConversieLaSirPentruFisier());
             }
         }
 
@@ -128,6 +128,15 @@ namespace NivelStocareDate
 
             return carti.Last().Id + INCREMENT;
 
+        }
+
+        public void RemoveCarte(int idCarte)
+        {
+            var liniiNoi = File.ReadAllLines(numeFisier)
+                .Where(l => int.Parse(l.Split(';')[0]) != idCarte)
+                .ToList();
+
+            File.WriteAllLines(numeFisier, liniiNoi);
         }
     }
 }

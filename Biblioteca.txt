@@ -1,0 +1,6 @@
+﻿1;Ion;Liviu Rebreanu
+2;Padurea spanzuratilor;Liviu Rebreanu
+3;Enigma Otiliei;George Calinescu
+4;Morometii I;Marin Preda
+5;Morometii II;Marin Preda
+6;Basmele romanilor;Petre Ispirescu

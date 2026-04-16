@@ -1,7 +1,8 @@
 ﻿using NivelStocareDate;
 using System.Configuration;
+using System.IO;
 
-namespace BibliotecaApp
+namespace NivelUIWPF
 {
     public static class StocareFactory
     {

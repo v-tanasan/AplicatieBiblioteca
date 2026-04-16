@@ -1,5 +1,6 @@
 ﻿using System;
-using GestiuneBiblioteca;
+//using GestiuneBiblioteca;
+using NivelStocareDate;
 using LibrarieModele;
 
 namespace BibliotecaApp
@@ -23,8 +24,10 @@ namespace BibliotecaApp
         public static void Main()
         {
             Carte? carteNoua = null;
-            administareBiblioteca adminBiblioteca = new administareBiblioteca();
-            List<Carte> biblioteca = adminBiblioteca.getCarti();
+            //administareBiblioteca adminBiblioteca = new administareBiblioteca();
+            IStocareData adminBiblioteca = StocareFactory.GetAdministratorStocare();
+            //List<Carte> biblioteca = adminBiblioteca.getCarti();
+            List<Carte> biblioteca = new List<Carte>();
             OptiuneMeniu optiune;
 
             do
@@ -51,14 +54,16 @@ namespace BibliotecaApp
                         carteNoua = citireCarteTastatura();
                         if (carteNoua != null)
                         {
-                            adminBiblioteca.addCarte(carteNoua);
+                            adminBiblioteca.AddCarte(carteNoua);
                             Console.WriteLine("\nCarte adaugata cu succes!");
                         }
                         break;
 
                     case OptiuneMeniu.StergeCarte:
+                        biblioteca = adminBiblioteca.GetCarti();
                         Carte stergCarte = citireTitluCarteTastatura(biblioteca);
-                        adminBiblioteca.removeCarte(biblioteca, stergCarte);
+                        adminBiblioteca.RemoveCarte(stergCarte.Id);
+                        Console.WriteLine($"\n...\"{stergCarte.Titlu}\" a fost stearsa!");
                         break;
 
                     case OptiuneMeniu.AfiseazaUltimaCarte:
@@ -67,6 +72,7 @@ namespace BibliotecaApp
                         break;
 
                     case OptiuneMeniu.AfiseazaCarti:
+                        biblioteca = adminBiblioteca.GetCarti();
                         Console.WriteLine("\nCarti in biblioteca:");
                         if (biblioteca.Count != 0)
                         {
@@ -82,10 +88,12 @@ namespace BibliotecaApp
                         break;
 
                     case OptiuneMeniu.CautaCarte:
+                        biblioteca = adminBiblioteca.GetCarti();
                         cautareTitluCarti(biblioteca);
                         break;
 
                     case OptiuneMeniu.CautaAutor:
+                        biblioteca = adminBiblioteca.GetCarti();
                         linq_cautareAutorCarti(biblioteca);
                         break;
 
@@ -144,7 +152,7 @@ namespace BibliotecaApp
             string titluCarte = Console.ReadLine();
             var cartiGasite = biblio.Where(a => 
                 a.Titlu.Contains(titluCarte, StringComparison.OrdinalIgnoreCase));
-            foreach (Carte c in biblio)
+            foreach (Carte c in cartiGasite)
             {
                 Console.WriteLine($"Id:{c.Id} ,Titlu: \"{c.Titlu}\", Autor: {c.Autor}");
             }
