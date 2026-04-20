@@ -1,13 +1,8 @@
 ﻿using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using LibrarieModele;
+using NivelStocareDate;
 
 namespace NivelUIWPF
 {
@@ -19,6 +14,11 @@ namespace NivelUIWPF
         public MainWindow()
         {
             InitializeComponent();
+            IStocareData adminBiblioteca = StocareFactory.GetAdministratorStocare();
+            List<Carte> carti = adminBiblioteca.GetCarti();
+            //lblNrStudenti.Content = $"Numar studenti: {studenti.Count}";
+            //lblStudenti.Content = "Studenti:\n" + string.Join("\n", studenti.Select(s => $"{s.IdStudent}: {s.Nume} {s.Prenume}"));
+            dataGridCarti.ItemsSource = carti;
         }
     }
 }

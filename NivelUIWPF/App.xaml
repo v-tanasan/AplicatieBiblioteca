@@ -4,6 +4,31 @@
              xmlns:local="clr-namespace:NivelUIWPF"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="CuloareFundal" Color="#F5F5F5"/>
+        <SolidColorBrush x:Key="CuloareButon" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="CuloareTextAlb" Color="White"/>
+
+        <Style TargetType="Window">
+            <Setter Property="Background" Value="{StaticResource CuloareFundal}"/>
+            <Setter Property="FontFamily" Value="Segoe UI"/>
+            <Setter Property="FontSize" Value="14"/>
+        </Style>
+
+        <Style TargetType="Button">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="10,5"/>
+            <Setter Property="Background" Value="{StaticResource CuloareButon}"/>
+            <Setter Property="Foreground" Value="{StaticResource CuloareTextAlb}"/>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+
+        <Style TargetType="Label">
+            <Setter Property="Margin" Value="5"/>
+            <Setter Property="FontWeight" Value="Bold"/>
+        </Style>
     </Application.Resources>
 </Application>

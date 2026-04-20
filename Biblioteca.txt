@@ -4,3 +4,7 @@
 4;Morometii I;Marin Preda
 5;Morometii II;Marin Preda
 6;Basmele romanilor;Petre Ispirescu
+7;Fabule;Grigore Alexandrescu
+8;Fram, ursul polar;Cezar Petrescu
+9;Toate panzele sus;Radu Tudoran
+10;Cel mai iubit dintre pamanteni;Marin Preda
