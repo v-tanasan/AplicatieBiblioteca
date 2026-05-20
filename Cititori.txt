@@ -1,0 +1,7 @@
+1;Popescu Mircea;1764845117245;mircea.popescu@gmail.com
+2;Georgiu Ciprian;1794615334079;ciprian.georgiu@yahoo.com
+3;Atudorei Iuliana;278150786224571;a_iuliana@gmail.com
+4;Diaconu Matei;1794516335074;diaconu_matei@gmail.com
+5;Birceanu Razvan;1792105338076;doru_b@yahoo.com
+6;Zagrean Tudor-Matei;1770512334077;zagrean_matei@assist.ro
+7;Encean Iustina;2740512464748;iustina.encean@gmail.com
