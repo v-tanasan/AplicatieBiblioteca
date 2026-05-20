@@ -33,6 +33,7 @@ namespace NivelUIWPF
             cititori = adminCititori.GetCititori();
 
             adminImprumuturi = StocareFactory.GetAdministratorStocareImprumuturi();
+            imprumuturi = adminImprumuturi.GetImprumuturi();
 
             dataGridCarti.ItemsSource = carti;
             dataGridCautare.ItemsSource = carti;
@@ -42,6 +43,7 @@ namespace NivelUIWPF
             cmbCititorReturnare.ItemsSource = cititori;
             dgCititori.ItemsSource = cititori;
             cmbCititor.ItemsSource = cititori;
+            dataGridImprumuturi.ItemsSource = imprumuturi;
         }
 
         private void btnCauta_Click(object sender, RoutedEventArgs e)
@@ -290,6 +292,11 @@ namespace NivelUIWPF
         }
 
         private void btnMeniuCarti_Click(object sender, RoutedEventArgs e)
+        {
+            tabPrincipal.SelectedIndex = 3;
+        }
+
+        private void btnMeniuImprumuturi_Click(object sender, RoutedEventArgs e)
         {
             tabPrincipal.SelectedIndex = 2;
         }

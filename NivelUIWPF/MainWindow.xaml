@@ -106,13 +106,13 @@
             <StackPanel Margin="10">
                 <TextBlock Text="BIBLIOTECA VIRTUALA" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="0,20,0,30" FontWeight="Bold"/>
 
-                <Button Content="Dashboard" Style="{StaticResource MenuButton}" Command="{Binding NavDashboardCommand}"/>
+                <Button x:Name="btnMeniuImprumuturi" Content="Imprumuturi" Style="{StaticResource MenuButton}" Click="btnMeniuImprumuturi_Click"/>
                 <Button x:Name="btnMeniuCarti" Content="Lista carti" Style="{StaticResource MenuButton}" Click="btnMeniuCarti_Click"/>
-                <Button Content="Cititori" Style="{StaticResource MenuButton}" Command="{Binding NavReadersCommand}"/>
+                <Button Content="Cititori" Style="{StaticResource MenuButton}" Click="btnMeniuOperatii_Click"/>
                 <Button x:Name="btnMeniuOperatii" Content="Imprumut / Restituire" Style="{StaticResource MenuButton}" Click="btnMeniuOperatii_Click"/>
 
                 <Separator Margin="0,20" Background="#34495E"/>
-                <Button Content="Settings" Style="{StaticResource MenuButton}"/>
+                <!--<Button Content="Settings" Style="{StaticResource MenuButton}"/>-->
             </StackPanel>
         </Border>
 
@@ -239,8 +239,66 @@
                 </Grid>
             </TabItem>
 
+            <!-- Tab-ul Imprumuturi -->
+            <TabItem Header="Imprumuturi">
+                <Grid Margin="20">
+                    <Grid Margin="0,0,0,20">
+                        <!-- DEFINIM RANDURI -->
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                            <RowDefinition Height="Auto"/>
+                        </Grid.RowDefinitions>
+
+                        <!-- DEFINIM COLOANE -->
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="400"/>
+                            <ColumnDefinition Width="115"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- LINIA 1 -->
+                        <TextBlock Text="Imprumuturi carte" FontSize="24" FontWeight="Bold" Grid.Row="0" Grid.Column="0" Margin="0,0,10,0"/>
+
+                        <!-- LINIA 2 -->
+                        <!--<TextBlock Text="Gaseste carte dupa titlu, autor, sau categorie." Grid.Row="1" Grid.Column="0" Margin="0,0,10,10"/>-->
+                        <Separator Grid.Row="1" Margin="0,20,0,5" Grid.ColumnSpan="3"/>
+
+                        <!-- LINIA 3 -->
+                        <!--
+                        <TextBox x:Name="txtCautImprumut" Height="35" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0"/>
+                        <ComboBox x:Name="cmbCautImprumut" Width="100" Height="30" SelectedIndex="0" Grid.Row="2" Grid.Column="1">
+                            <ComboBoxItem Content="Carte"/>
+                            <ComboBoxItem Content="Autor"/>
+                        </ComboBox>
+                        <StackPanel x:Name="stkxx" Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
+                            <Button x:Name="btnCautaxx" Content="Cauta" Width="100" Height="35" Style="{StaticResource ActionButton}" Click="btnCauta_Click"/>
+                            <Button x:Name="btnResetxx" Content="Reset" Width="100" Height="35" Style="{StaticResource ActionButton}" Click="btnReset_Click"/>
+                        </StackPanel>
+                        -->
+
+                        <!-- LINIA 4 -->
+                        <DataGrid x:Name="dataGridImprumuturi" Grid.Row="3" Grid.ColumnSpan="3" AutoGenerateColumns="False" IsReadOnly="True" Background="White" Margin="0,10,15,0">
+                            <DataGrid.Columns>
+                                <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="65"/>
+                                <DataGridTextColumn Header="Id carte" Binding="{Binding IdCarte}" Width="100"/>
+                                <DataGridTextColumn Header="Id cititor" Binding="{Binding IdCititor}" Width="100"/>
+                                <DataGridTextColumn Header="Data imprumut" Binding="{Binding DataImprumutFormatata}" Width="Auto"/>
+                                <DataGridTextColumn Header="Data imprumut" Binding="{Binding DataReturnareFormatata}" Width="Auto"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
+                            </DataGrid.Columns>
+                        </DataGrid>
+
+                        <!-- LINIA 5 -->
+                        <TextBlock x:Name="txtEroareImprumuturi" Grid.Row="4" Grid.ColumnSpan="3" FontSize="12" FontWeight="Bold" Margin="5,10,5,0" Height="25"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
             <!-- Tab Cautare -->
-            <TabItem Header="Cautare">
+            <TabItem Header="Cautare" HorizontalAlignment="Center" Width="60" Height="23" VerticalAlignment="Top">
                 <Grid Margin="20">
                     <Grid Margin="0,0,0,20">
                         <!-- DEFINIM RANDURI -->
@@ -278,7 +336,7 @@
                         </StackPanel>
 
                         <!-- LINIA 4 -->
-                        <DataGrid x:Name="dataGridCautare" Grid.Row="3" Grid.ColumnSpan="3" AutoGenerateColumns="False" IsReadOnly="True" Background="White" Margin="0,10,0,0">
+                        <DataGrid x:Name="dataGridCautare" Grid.Row="3" Grid.ColumnSpan="3" AutoGenerateColumns="False" IsReadOnly="True" Background="White" Margin="0,10,15,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
                                 <DataGridTextColumn Header="Titlu" Binding="{Binding Titlu}" Width="250"/>
@@ -292,6 +350,7 @@
                     </Grid>
                 </Grid>
             </TabItem>
+
         </TabControl>
     </Grid>
 </Window>

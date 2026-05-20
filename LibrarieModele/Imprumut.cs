@@ -15,6 +15,33 @@
         public DateTime DataImprumut { get; set; }
         public DateTime? DataReturnare { get; set; }
 
+        // Formatare pentru UI
+        public string DataImprumutFormatata
+        {
+            get
+            {
+                return DataImprumut.ToString("dd.MM.yyyy HH:mm");
+            }
+        }
+
+        public string DataReturnareFormatata
+        {
+            get
+            {
+                return DataReturnare?.ToString("dd.MM.yyyy HH:mm") ?? "-";
+            }
+        }
+
+        public string Status
+        {
+            get
+            {
+                return DataReturnare == null
+                    ? "Activ"
+                    : "Returnat";
+            }
+        }
+
         public Imprumut()
         {
             Id = 0;
