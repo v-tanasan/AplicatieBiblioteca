@@ -104,7 +104,7 @@
         <!-- Navigare Sidebar -->
         <Border Background="#2C3E50" Grid.Column="0">
             <StackPanel Margin="10">
-                <TextBlock Text="BIBLIOTECA VIRTUALA" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="0,20,0,30" FontWeight="Bold"/>
+                <TextBlock Text="Biblioteca Virtuala" Foreground="White" FontSize="18" HorizontalAlignment="Center" Margin="0,20,0,30" FontWeight="Bold"/>
 
                 <Button x:Name="btnMeniuImprumuturi" Content="Imprumuturi" Style="{StaticResource MenuButton}" Click="btnMeniuImprumuturi_Click"/>
                 <Button x:Name="btnMeniuCarti" Content="Lista carti" Style="{StaticResource MenuButton}" Click="btnMeniuCarti_Click"/>
@@ -158,7 +158,7 @@
                     </StackPanel>
 
                     <!-- Afisare date -->
-                    <DataGrid x:Name="dataGridCarti" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="False" Background="White">
+                    <DataGrid x:Name="dataGridCarti" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="False" CanUserAddRows="False" Background="White">
                         <DataGrid.Columns>
                             <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" Width="65"/>
                             <DataGridTextColumn Header="Titlu" Binding="{Binding Titlu}" IsReadOnly="False" Width="*"/>
