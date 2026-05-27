@@ -1,4 +1,4 @@
-1;Ion;Liviu Rebreanu;disponibila
+1;Ion;Liviu Rebreanu;indisponibila
 2;Padurea spanzuratilor;Liviu Rebreanu;disponibila
 3;Enigma Otiliei;George Calinescu;indisponibila
 4;Morometii I;Marin Preda;disponibila
@@ -12,8 +12,8 @@
 12;In vreme de razboi;Ion Luca Caragiale;disponibila
 13;Baltagul;Mihail Sadoveanu;disponibila
 14;Dumbrava minunata;Mihail Sadoveanu;disponibila
-15;Moartea lui Iocan;Marin Preda;disponibila
-16;Amintiri din copilarie;Ion Creanga;disponibila
+15;Moartea lui Iocan;Marin Preda;indisponibila
+16;Amintiri din copilarie;Ion Creanga;indisponibila
 17;Maitreyi;Mircea Eliade;disponibila
 18;La tiganci;Mircea Eliade;disponibila
 19;Moara cu noroc;Ioan Slavici;disponibila

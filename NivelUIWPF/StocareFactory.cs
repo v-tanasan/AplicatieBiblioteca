@@ -10,6 +10,20 @@ namespace NivelUIWPF
         private const string NUME_FISIER_CARTI = "NumeFisierCarti";
         private const string NUME_FISIER_CITITORI = "NumeFisierCititori";
         private const string NUME_FISIER_IMPRUMUTURI = "NumeFisierImprumuturi";
+        private const string LIMITA_MAXIMA_IMPRUMUTURI = "LimitaMaximaImprumuturi";
+
+        public static int GetLimitaMaximaImprumuturi()
+        {
+            string valoare =
+                ConfigurationManager.AppSettings[LIMITA_MAXIMA_IMPRUMUTURI] ?? "3";
+
+            if (int.TryParse(valoare, out int limita))
+            {
+                return limita;
+            }
+
+            return 3;
+        }
 
         public static IStocareData GetAdministratorStocare()
         {

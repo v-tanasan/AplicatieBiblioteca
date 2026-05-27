@@ -22,6 +22,8 @@ namespace NivelUIWPF
         List<Imprumut> imprumuturi = new List<Imprumut>();
         IStocareImprumuturi adminImprumuturi;
 
+        int limitaMaximaImprumuturi;
+
 
         public MainWindow()
         {
@@ -36,6 +38,8 @@ namespace NivelUIWPF
 
             adminImprumuturi = StocareFactory.GetAdministratorStocareImprumuturi();
             imprumuturi = adminImprumuturi.GetImprumuturi();
+
+            limitaMaximaImprumuturi = StocareFactory.GetLimitaMaximaImprumuturi();
 
             refreshCartiAllTabs();
             //dataGridCarti.ItemsSource = carti;
@@ -224,6 +228,16 @@ namespace NivelUIWPF
             if (cititorSelectat == null)
             {
                 txtEroareInregistrare.Text = "Selectati cititorul caruia imprumutati cartea !";
+                return;
+            }
+
+            //verific daca nu s-a depasit nr max de imprumuturi
+            imprumuturi = adminImprumuturi.GetImprumuturi();
+
+            int nrImprumuturiActive = imprumuturi.Count(i => i.IdCititor == cititorSelectat.Id && i.DataReturnare == null);
+            if (nrImprumuturiActive >= limitaMaximaImprumuturi)
+            {
+                txtEroareInregistrare.Text = $"Cititorul a atins limita maxima de {limitaMaximaImprumuturi} imprumuturi!";
                 return;
             }
 
