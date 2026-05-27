@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Controls;
 using LibrarieModele;
 using NivelStocareDate;
+using System.Net.Mail;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace NivelUIWPF
@@ -21,6 +22,7 @@ namespace NivelUIWPF
         List<Imprumut> imprumuturi = new List<Imprumut>();
         IStocareImprumuturi adminImprumuturi;
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -35,15 +37,16 @@ namespace NivelUIWPF
             adminImprumuturi = StocareFactory.GetAdministratorStocareImprumuturi();
             imprumuturi = adminImprumuturi.GetImprumuturi();
 
-            dataGridCarti.ItemsSource = carti;
-            dataGridCautare.ItemsSource = carti;
+            refreshCartiAllTabs();
+            //dataGridCarti.ItemsSource = carti;
+            //dataGridCautare.ItemsSource = carti;
             cmbCarte.ItemsSource = carti;
             cmbCarte.ItemsSource = cartiDisponibile;
             cmbCarteReturnare.ItemsSource = cartiIndisponibile;
             cmbCititorReturnare.ItemsSource = cititori;
             dgCititori.ItemsSource = cititori;
             cmbCititor.ItemsSource = cititori;
-            dataGridImprumuturi.ItemsSource = imprumuturi;
+            //dataGridImprumuturi.ItemsSource = imprumuturi;
         }
 
         private void btnCauta_Click(object sender, RoutedEventArgs e)
@@ -159,6 +162,7 @@ namespace NivelUIWPF
             string numeCititor = txtNumeCititor.Text.Trim();
             string cnpCititor = txtCnpCititor.Text.Trim();
             string emailCititor = txtEmailCititor.Text.Trim();
+            DateTime data_inreg = pkrInregistrare.SelectedDate ?? DateTime.Now;
 
             if (string.IsNullOrEmpty(numeCititor))
             {
@@ -172,13 +176,27 @@ namespace NivelUIWPF
                 return;
             }
 
+            // validez E-mailul
+            if (!emailValid(emailCititor))
+            {
+                txtEroareInregistrare.Text = "Email invalid!";
+                return;
+            }
+
+            // validez CNP-ul
+            if (!cnpValid(cnpCititor))
+            {
+                txtEroareInregistrare.Text = "CNP-ul trebuie sa contina exact 13 cifre !";
+                return;
+            }
+
             if (string.IsNullOrEmpty(emailCititor))
             {
                 txtEroareInregistrare.Text = "Introduceti e-mailul cititorului !";
                 return;
             }
 
-            Cititor cititorNou = new Cititor(0, numeCititor, cnpCititor, emailCititor);
+            Cititor cititorNou = new Cititor(0, numeCititor, cnpCititor, emailCititor, data_inreg);
             adminCititori.AddCititor(cititorNou);
 
             txtNumeCititor.Text = string.Empty;
@@ -188,6 +206,7 @@ namespace NivelUIWPF
             dgCititori.ItemsSource = null;
             dgCititori.ItemsSource = cititori;
             cmbCititor.ItemsSource = cititori;
+            pkrInregistrare.SelectedDate = null;
             txtEroareInregistrare.Text = "Cititor salvat cu succes !";
         }
 
@@ -215,6 +234,7 @@ namespace NivelUIWPF
             adminImprumuturi.AddImprumut(imprumutNou);
 
             resetImprumuturi();
+            resetReturnari();
             refreshCartiAllTabs();
             refreshCombo_Imprumuturi();
             refreshCombo_Returnari();
@@ -233,14 +253,31 @@ namespace NivelUIWPF
                 return;
             }
 
+            
             if (cititorReturnare == null)
             {
                 txtEroareInregistrare.Text = "Selectati cititorul care restituie cartea !";
                 return;
             }
+            
+            
+            // caut imprumutul activ pentru cartea selectata
+            Imprumut imprumutActiv = imprumuturi.FirstOrDefault(i => i.IdCarte == carteReturnata.Id && i.DataReturnare == null);
+
+            if (imprumutActiv == null)
+            {
+                txtEroareInregistrare.Text = "Nu exista un imprumut activ pentru aceasta carte !";
+                return;
+            }
+
+            // actualizare imprumut cu data returnarii
+            imprumutActiv.DataReturnare = DateTime.Now;
+            adminImprumuturi.UpdateImprumut(imprumutActiv);
 
             carteReturnata.Status = "disponibila";
             adminBiblioteca.UpdateCarte(carteReturnata);
+
+            resetImprumuturi();
             resetReturnari();
             refreshCartiAllTabs();
             refreshCombo_Imprumuturi();
@@ -264,11 +301,34 @@ namespace NivelUIWPF
         private void refreshCartiAllTabs()
         {
             carti = adminBiblioteca.GetCarti();
+            imprumuturi = adminImprumuturi.GetImprumuturi();
+
+            // COMPLETARE NUME SI TITLU PENTRU AFISARE
+            foreach (Imprumut imprumut in imprumuturi)
+            {
+                Carte carte = carti.FirstOrDefault(c => c.Id == imprumut.IdCarte);
+
+                if (carte != null)
+                {
+                    imprumut.TitluCarteAfisat = carte.Titlu;
+                }
+
+                Cititor cititor = cititori.FirstOrDefault(c => c.Id == imprumut.IdCititor);
+
+                if (cititor != null)
+                {
+                    imprumut.NumeCititorAfisat = cititor.Nume;
+                }
+            }
 
             // refresh grid date in tab-ul (principal) Carti
             dataGridCarti.ItemsSource = null;
             dataGridCarti.ItemsSource = carti;
-            
+
+            // refresh grid date in tab-ul Imprumuturi
+            dataGridImprumuturi.ItemsSource = null;
+            dataGridImprumuturi.ItemsSource = imprumuturi;
+
             // refresh grid date in tab-ul Cautare
             dataGridCautare.ItemsSource = null;
             dataGridCautare.ItemsSource = carti;
@@ -299,6 +359,93 @@ namespace NivelUIWPF
         private void btnMeniuImprumuturi_Click(object sender, RoutedEventArgs e)
         {
             tabPrincipal.SelectedIndex = 2;
+        }
+
+        private void cmbCarteReturnare_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Carte carteSelectata = (Carte)cmbCarteReturnare.SelectedItem;
+
+            if (carteSelectata == null)
+            {
+                return;
+            }
+
+            // caut imprumutul activ
+            Imprumut imprumutActiv = imprumuturi.FirstOrDefault(i => i.IdCarte == carteSelectata.Id && i.DataReturnare == null);
+
+            if (imprumutActiv == null)
+            {
+                cmbCititorReturnare.SelectedItem = null;
+                return;
+            }
+
+            // caut cititorul care a imprumutat cartea
+            Cititor cititor = cititori.FirstOrDefault(c => c.Id == imprumutActiv.IdCititor);
+
+            // selectam automat cititorul in ComboBox
+            cmbCititorReturnare.SelectedIndex = -1;
+            cmbCititorReturnare.SelectedItem = cititor;
+        }
+
+        // validare E-mail
+        private bool emailValid(string email)
+        {
+            try
+            {
+                MailAddress mail = new MailAddress(email);
+                return mail.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        // validare CNP
+        private bool cnpValid(string cnp)
+        {
+            return cnp.Length == 13 && cnp.All(char.IsDigit);
+        }
+
+        private void dgCititori_RowEditEnding(object sender, DataGridRowEditEndingEventArgs e)
+        {
+            Cititor cititorModificat = e.Row.Item as Cititor;
+
+            if (cititorModificat == null)
+                return;
+
+            adminCititori.UpdateCititor(cititorModificat);
+        }
+
+        private void btnDeleteCarte_Click(object sender, RoutedEventArgs e)
+        {
+            Button btn = sender as Button;
+
+            if (btn == null)
+                return;
+
+            Carte carteSelectata = btn.DataContext as Carte;
+
+            if (carteSelectata == null)
+                return;
+
+            if (carteSelectata.Status == "indisponibila")
+            {
+                txtEroare.Text = "Nu poti sterge o carte imprumutata!";
+                return;
+            }
+
+            adminBiblioteca.RemoveCarte(carteSelectata.Id);
+
+            carti = adminBiblioteca.GetCarti();
+
+            dataGridCarti.ItemsSource = null;
+            dataGridCarti.ItemsSource = carti;
+
+            refreshCombo_Imprumuturi();
+            refreshCartiAllTabs();
+
+            txtEroare.Text = "Cartea a fost stearsa!";
         }
     }
 }

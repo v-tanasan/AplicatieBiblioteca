@@ -14,8 +14,11 @@
         public int IdCititor { get; set; }
         public DateTime DataImprumut { get; set; }
         public DateTime? DataReturnare { get; set; }
+        // Proprietati calculate
+        public string TitluCarteAfisat { get; set; }
+        public string NumeCititorAfisat { get; set; }
 
-        // Formatare pentru UI
+        // Formatare doar pentru UI
         public string DataImprumutFormatata
         {
             get
@@ -24,6 +27,7 @@
             }
         }
 
+        // Formatare doar pentru UI
         public string DataReturnareFormatata
         {
             get
@@ -31,6 +35,7 @@
                 return DataReturnare?.ToString("dd.MM.yyyy HH:mm") ?? "-";
             }
         }
+
 
         public string Status
         {

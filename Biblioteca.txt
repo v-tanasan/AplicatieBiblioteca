@@ -4,9 +4,9 @@
 4;Morometii I;Marin Preda;disponibila
 5;Morometii II;Marin Preda;disponibila
 6;Basmele romanilor;Petre Ispirescu;disponibila
-7;Fabule;Grigore Alexandrescu;indisponibila
-8;Fram, ursul polar;Cezar Petrescu;disponibila
-9;Toate panzele sus;Radu Tudoran;disponibila
+7;Fabule;Grigore Alexandrescu;disponibila
+8;Fram, ursul polar;Cezar Petrescu;indisponibila
+9;Toate panzele sus;Radu Tudoran;indisponibila
 10;Cel mai iubit dintre pamanteni;Marin Preda;disponibila
 11;O faclie de Paste;Ion Luca Caragiale;disponibila
 12;In vreme de razboi;Ion Luca Caragiale;disponibila
@@ -19,3 +19,5 @@
 19;Moara cu noroc;Ioan Slavici;disponibila
 20;In dulcele stil clasic;Nichita Stanescu;disponibila
 21;In gradina Ghetsemani;Vasile Voiculescu;disponibila
+22;Steaua fara nume;Marin Sorescu;indisponibila
+23;Ultima noapte de dragoste intaia noapte de razboi;Camil Petrescu;disponibila

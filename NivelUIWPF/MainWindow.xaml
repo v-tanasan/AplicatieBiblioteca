@@ -158,33 +158,37 @@
                     </StackPanel>
 
                     <!-- Afisare date -->
-                    <DataGrid x:Name="dataGridCarti" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" Background="White">
+                    <DataGrid x:Name="dataGridCarti" Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="False" Background="White">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
-                            <DataGridTextColumn Header="Titlu" Binding="{Binding Titlu}" Width="*"/>
-                            <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="150"/>
-                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" Width="65"/>
+                            <DataGridTextColumn Header="Titlu" Binding="{Binding Titlu}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" IsReadOnly="False" Width="150"/>
+                            <DataGridTextColumn Header="Status" Binding="{Binding Status}" IsReadOnly="True" Width="100"/>
                             <DataGridTemplateColumn Header="Actions" Width="100">
                                 <DataGridTemplateColumn.CellTemplate>
                                     <DataTemplate>
-                                        <Button Content="Delete" Background="#C0392B" Foreground="White" Command="{Binding DataContext.DeleteBookCommand, RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}}" Style="{StaticResource ActionButton}"/>
+                                        <Button x:Name="btnDeleteCarte" Content="Delete" Background="#C0392B" Foreground="White" Style="{StaticResource ActionButton}" Click="btnDeleteCarte_Click"/>
                                     </DataTemplate>
                                 </DataGridTemplateColumn.CellTemplate>
                             </DataGridTemplateColumn>
                         </DataGrid.Columns>
                     </DataGrid>
-                    <TextBlock x:Name="txtEroare" Text="" Grid.Row="2" FontSize="12" FontWeight="Bold" Margin="5,10,5,5"/>
+                    <TextBlock x:Name="txtEroare" Text="" Grid.Row="2" FontSize="12" Foreground="Red" FontWeight="Bold" Margin="5,10,5,5"/>
                 </Grid>
             </TabItem>
 
             <!-- Tab Cititori si Imprumuturi/Restituiri-->
             <TabItem Header="Operatiuni">
                 <Grid x:Name="panelCititori" Margin="20,10,20,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="183*"/>
+                    </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <UniformGrid Grid.Row="0" Columns="2" Margin="20,10,20,20">
+                    <UniformGrid Grid.Row="0" Columns="2" Margin="16,10,20,20" Grid.Column="1">
                         <!-- Inregistrare cititor -->
                         <GroupBox Header="Inregistrare cititor" Margin="10">
                             <StackPanel Margin="10">
@@ -195,7 +199,8 @@
                                 <Label Content="Email"/>
                                 <TextBox x:Name="txtEmailCititor"/>
                                 <Button x:Name="btnInregistrare" Content="Inregistrare" Margin="0,20,0,0" Height="35" Background="#27AE60" Foreground="White" Style="{StaticResource ActionButton}" Click="btnInregistrare_Click"/>
-                                <TextBlock x:Name="txtEroareInregistrare" FontSize="12" FontWeight="Bold" Margin="0,10,0,-1" />
+                                <DatePicker x:Name="pkrInregistrare" Margin="0,5,0,5"/>
+                                <TextBlock x:Name="txtEroareInregistrare" FontSize="12" FontWeight="Bold" Foreground="Red" Margin="0,10,0,0" />
                             </StackPanel>
                         </GroupBox>
 
@@ -208,19 +213,8 @@
                                 <ComboBox x:Name="cmbCititor" DisplayMemberPath="Nume" SelectedValuePath="Id" Margin="5,2,5,5"/>
                                 <Button x:Name="btnImprumuta" Grid.Column="0" Content="Imprumuta" Margin="0,10,5,0" Height="35" Background="#8E44AD" Foreground="White" Style="{StaticResource ActionButton}" Click="btnImprumuta_Click"/>
 
-                                <!--
-                                <Grid Margin="0,20,0,0">
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="*"/>
-                                        <ColumnDefinition Width="*"/>
-                                    </Grid.ColumnDefinitions>
-                                    <Button x:Name="btnImprumuta" Grid.Column="0" Content="Imprumuta" Margin="0,0,5,0" Height="35" Background="#8E44AD" Foreground="White" Style="{StaticResource ActionButton}" Click="btnImprumuta_Click"/>
-                                    <Button x:Name="btnReturneaza" Grid.Column="1" Content="Returneaza" Margin="5,0,0,0" Height="35" Background="#F39C12" Foreground="White" Style="{StaticResource ActionButton}"/>
-                                </Grid>
-                                -->
-
                                 <Label Content="Carte" Margin="0,15,0,2"/>
-                                <ComboBox x:Name="cmbCarteReturnare" DisplayMemberPath="Titlu" SelectedValuePath="Id" Margin="5,2,5,2"/>
+                                <ComboBox x:Name="cmbCarteReturnare" DisplayMemberPath="Titlu" SelectedValuePath="Id" Margin="5,2,5,2" SelectionChanged="cmbCarteReturnare_SelectionChanged"/>
                                 <Label Content="Cititor" Margin="0,5,0,2"/>
                                 <ComboBox x:Name="cmbCititorReturnare" DisplayMemberPath="Nume" SelectedValuePath="Id" Margin="5,2,5,5"/>
                                 <Button x:Name="btnReturneaza" Grid.Column="1" Content="Returneaza" Margin="5,10,0,0" Height="35" Background="#F39C12" Foreground="White" Style="{StaticResource ActionButton}" Click="btnReturneaza_Click"/>
@@ -228,12 +222,13 @@
                             </StackPanel>
                         </GroupBox>
                     </UniformGrid>
-                    <DataGrid x:Name="dgCititori" Grid.Row="1" IsReadOnly="True" AutoGenerateColumns="False" Background="White">
+                    <DataGrid x:Name="dgCititori" Grid.Row="1" IsReadOnly="False" AutoGenerateColumns="False" Background="White" Grid.ColumnSpan="2" RowEditEnding="dgCititori_RowEditEnding">
                         <DataGrid.Columns>
-                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
-                            <DataGridTextColumn Header="Nume" Binding="{Binding Nume}" Width="Auto"/>
-                            <DataGridTextColumn Header="Cnp" Binding="{Binding Cnp}" Width="*"/>
-                            <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" Width="Auto"/>
+                            <DataGridTextColumn Header="ID" Binding="{Binding Id}" IsReadOnly="True" Width="65"/>
+                            <DataGridTextColumn Header="Nume" Binding="{Binding Nume}" IsReadOnly="False" Width="Auto"/>
+                            <DataGridTextColumn Header="Cnp" Binding="{Binding Cnp}" IsReadOnly="False" Width="Auto"/>
+                            <DataGridTextColumn Header="E-mail" Binding="{Binding Email}" IsReadOnly="False" Width="*"/>
+                            <DataGridTextColumn Header="Data Inregistrare" Binding="{Binding DataInregistrareFormatata}" IsReadOnly="False" Width="Auto"/>
                         </DataGrid.Columns>
                     </DataGrid>
                 </Grid>
@@ -267,32 +262,21 @@
                         <Separator Grid.Row="1" Margin="0,20,0,5" Grid.ColumnSpan="3"/>
 
                         <!-- LINIA 3 -->
-                        <!--
-                        <TextBox x:Name="txtCautImprumut" Height="35" Grid.Row="2" Grid.Column="0" Margin="0,0,10,0"/>
-                        <ComboBox x:Name="cmbCautImprumut" Width="100" Height="30" SelectedIndex="0" Grid.Row="2" Grid.Column="1">
-                            <ComboBoxItem Content="Carte"/>
-                            <ComboBoxItem Content="Autor"/>
-                        </ComboBox>
-                        <StackPanel x:Name="stkxx" Grid.Row="2" Grid.Column="2" Orientation="Horizontal">
-                            <Button x:Name="btnCautaxx" Content="Cauta" Width="100" Height="35" Style="{StaticResource ActionButton}" Click="btnCauta_Click"/>
-                            <Button x:Name="btnResetxx" Content="Reset" Width="100" Height="35" Style="{StaticResource ActionButton}" Click="btnReset_Click"/>
-                        </StackPanel>
-                        -->
 
                         <!-- LINIA 4 -->
                         <DataGrid x:Name="dataGridImprumuturi" Grid.Row="3" Grid.ColumnSpan="3" AutoGenerateColumns="False" IsReadOnly="True" Background="White" Margin="0,10,15,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="Id" Binding="{Binding Id}" Width="65"/>
-                                <DataGridTextColumn Header="Id carte" Binding="{Binding IdCarte}" Width="100"/>
-                                <DataGridTextColumn Header="Id cititor" Binding="{Binding IdCititor}" Width="100"/>
+                                <DataGridTextColumn Header="Carte" Binding="{Binding TitluCarteAfisat}" Width="180"/>
+                                <DataGridTextColumn Header="Cititor" Binding="{Binding NumeCititorAfisat}" Width="150"/>
                                 <DataGridTextColumn Header="Data imprumut" Binding="{Binding DataImprumutFormatata}" Width="Auto"/>
-                                <DataGridTextColumn Header="Data imprumut" Binding="{Binding DataReturnareFormatata}" Width="Auto"/>
+                                <DataGridTextColumn Header="Data restituire" Binding="{Binding DataReturnareFormatata}" Width="Auto"/>
                                 <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
                         <!-- LINIA 5 -->
-                        <TextBlock x:Name="txtEroareImprumuturi" Grid.Row="4" Grid.ColumnSpan="3" FontSize="12" FontWeight="Bold" Margin="5,10,5,0" Height="25"/>
+                        <TextBlock x:Name="txtEroareImprumuturi" Grid.Row="4" Grid.ColumnSpan="3" FontSize="12" FontWeight="Bold" Margin="5,10,5,0" Height="25" Foreground="Red"/>
                     </Grid>
                 </Grid>
             </TabItem>
@@ -339,14 +323,14 @@
                         <DataGrid x:Name="dataGridCautare" Grid.Row="3" Grid.ColumnSpan="3" AutoGenerateColumns="False" IsReadOnly="True" Background="White" Margin="0,10,15,0">
                             <DataGrid.Columns>
                                 <DataGridTextColumn Header="ID" Binding="{Binding Id}" Width="65"/>
-                                <DataGridTextColumn Header="Titlu" Binding="{Binding Titlu}" Width="250"/>
-                                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="160"/>
-                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="100"/>
+                                <DataGridTextColumn Header="Titlu" Binding="{Binding Titlu}" Width="Auto"/>
+                                <DataGridTextColumn Header="Autor" Binding="{Binding Autor}" Width="170"/>
+                                <DataGridTextColumn Header="Status" Binding="{Binding Status}" Width="Auto"/>
                             </DataGrid.Columns>
                         </DataGrid>
 
                         <!-- LINIA 5 -->
-                        <TextBlock x:Name="txtEroareCautare" Grid.Row="4" Grid.ColumnSpan="3" FontSize="12" FontWeight="Bold" Margin="5,10,5,0" Height="25"/>
+                        <TextBlock x:Name="txtEroareCautare" Grid.Row="4" Grid.ColumnSpan="3" FontSize="12" FontWeight="Bold" Margin="5,10,5,0" Height="25" Foreground="Red"/>
                     </Grid>
                 </Grid>
             </TabItem>
